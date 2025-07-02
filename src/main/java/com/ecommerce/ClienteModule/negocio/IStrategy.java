@@ -1,4 +1,4 @@
-package com.ecommerce.ClienteModule.application;
+package com.ecommerce.ClienteModule.negocio;
 
 import com.ecommerce.ClienteModule.domain.EntidadeDominio;
 

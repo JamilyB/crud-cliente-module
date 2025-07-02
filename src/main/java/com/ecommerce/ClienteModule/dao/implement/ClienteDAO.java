@@ -1,5 +1,6 @@
-package com.ecommerce.ClienteModule.dao;
+package com.ecommerce.ClienteModule.dao.implement;
 
+import com.ecommerce.ClienteModule.dao.IDAO;
 import com.ecommerce.ClienteModule.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -216,7 +217,6 @@ public class ClienteDAO implements IDAO<Cliente> {
         }
         return t;
     }
-
 
     private void deleteTelefonePorClienteId(Long clienteId) {
         String sql = "DELETE FROM telefone WHERE cliente_id = ?";

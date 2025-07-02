@@ -1,27 +1,39 @@
 <div th:fragment="component" xmlns:th="http://www.thymeleaf.org">
-<h4 class="mt-4">Cartão</h4>
-<div class="row">
-    <div class="col-md-4">
-        <label for="numCartao" class="form-label">Número do Cartão:</label>
-        <input type="text" th:field="*{cartoes[0].numCartao}" id="numCartao" class="form-control" required/>
+    <h4 class="mt-4">Cartão</h4>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="numCartao-label">Número do Cartão:</span>
+                <input type="text" th:field="*{cartoes[0].numCartao}" id="numCartao" class="form-control" aria-describedby="numCartao-label" required/>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="nomeImpresso-label">Nome Impresso:</span>
+                <input type="text" th:field="*{cartoes[0].nomeImpresso}" id="nomeImpresso" class="form-control" aria-describedby="nomeImpresso-label" required/>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <label for="nomeImpresso" class="form-label">Nome Impresso:</label>
-        <input type="text" th:field="*{cartoes[0].nomeImpresso}" id="nomeImpresso" class="form-control" required/>
+
+    <div class="row">
+        <div class="col-2">
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="codSeguranca-label">CVV:</span>
+                <input type="text" th:field="*{cartoes[0].codSeguranca}" id="codSeguranca" class="form-control"
+                       maxlength="3" inputmode="numeric" pattern="\d{3}" aria-describedby="codSeguranca-label" required/>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="bandeira-label">Bandeira:</span>
+                <select th:field="*{cartoes[0].bandeira.id}" id="bandeira" class="form-select" aria-describedby="bandeira-label" required>
+                    <option value="" disabled selected>Selecione</option>
+                    <option th:each="b : ${bandeiras}" th:value="${b.id}" th:text="${b.descricao}"></option>
+                </select>
+            </div>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-2">
-        <label for="codSeguranca" class="form-label">CVV:</label>
-        <input type="text" th:field="*{cartoes[0].codSeguranca}" id="codSeguranca" class="form-control"
-               maxlength="3" inputmode="numeric" pattern="\d{3}" required/>
-    </div>
-    <div class="col-3">
-        <label for="bandeira" class="form-label">Bandeira:</label>
-        <select th:field="*{cartoes[0].bandeira.id}" id="bandeira" class="form-select" required>
-            <option value="" disabled selected>Selecione</option>
-            <option th:each="b : ${bandeiras}" th:value="${b.id}" th:text="${b.descricao}"></option>
-        </select>
-    </div>
-</div>
 </div>

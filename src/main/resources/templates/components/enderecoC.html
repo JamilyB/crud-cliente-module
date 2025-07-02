@@ -1,53 +1,73 @@
 <div class="row" th:fragment="component" xmlns:th="http://www.thymeleaf.org">
-<h4 class="mt-2">Endereço de Cobrança</h4>
+    <h4 class="mt-2">Endereço de Cobrança</h4>
+
     <input type="hidden" th:field="*{enderecosCobranca[0].id}" />
     <input type="hidden" th:field="*{enderecosCobranca[0].cidade.id}" />
-<div class="row">
+
     <div class="col-3">
-        <label for="logradouroC" class="form-label">Tipo de Logradouro:</label>
-        <select th:field="*{enderecosCobranca[0].tipoLogradouro.id}"
-                id="tipoLogradouroC" class="form-select" required>
-            <option value="" disabled selected>Selecione</option>
-            <option th:each="b : ${logradouros}" th:value="${b.id}" th:text="${b.descricao}"></option>
-        </select>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="tipoLogradouroC-label">Tipo de Logradouro:</span>
+            <select th:field="*{enderecosCobranca[0].tipoLogradouro.id}"
+                    id="tipoLogradouroC" class="form-select" aria-describedby="tipoLogradouroC-label" required>
+                <option value="" disabled selected>Selecione</option>
+                <option th:each="b : ${logradouros}" th:value="${b.id}" th:text="${b.descricao}"></option>
+            </select>
+        </div>
     </div>
+
     <div class="col-md-4">
-        <label for="logradouroC" class="form-label">Logradouro:</label>
-        <input type="text" th:field="*{enderecosCobranca[0].logradouro}" id="logradouroC" class="form-control" required/>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="logradouroC-label">Logradouro:</span>
+            <input type="text" th:field="*{enderecosCobranca[0].logradouro}" id="logradouroC" class="form-control" aria-describedby="logradouroC-label" required/>
+        </div>
     </div>
+
     <div class="col-3">
-        <label for="tipoResidencialC" class="form-label">Tipo Residencial:</label>
-        <select th:field="*{enderecosCobranca[0].tipoResidencial.id}"
-                id="tipoResidencialC" class="form-select" required>
-            <option value="" disabled>Selecione</option>
-            <option th:each="b : ${tiposResidencial}" th:value="${b.id}" th:text="${b.descricao}"></option>
-        </select>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="tipoResidencialC-label">Tipo Residencial:</span>
+            <select th:field="*{enderecosCobranca[0].tipoResidencial.id}"
+                    id="tipoResidencialC" class="form-select" aria-describedby="tipoResidencialC-label" required>
+                <option value="" disabled>Selecione</option>
+                <option th:each="b : ${tiposResidencial}" th:value="${b.id}" th:text="${b.descricao}"></option>
+            </select>
+        </div>
     </div>
+
     <div class="col-md-2">
-        <label for="numeroEnderecoC" class="form-label">Número:</label>
-        <input type="text" th:field="*{enderecosCobranca[0].numero}" id="numeroEnderecoC" class="form-control" required/>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="numeroEnderecoC-label">Número:</span>
+            <input type="text" th:field="*{enderecosCobranca[0].numero}" id="numeroEnderecoC" class="form-control" aria-describedby="numeroEnderecoC-label" required/>
+        </div>
     </div>
 
     <div class="col-md-3">
-        <label for="bairroC" class="form-label">Bairro:</label>
-        <input type="text" th:field="*{enderecosCobranca[0].bairro}" id="bairroC" class="form-control" required/>
-    </div>
-    <div class="col-md-3">
-        <label for="cepC" class="form-label">CEP:</label>
-        <input type="text" th:field="*{enderecosCobranca[0].cep}" id="cepC" class="form-control" required/>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="bairroC-label">Bairro:</span>
+            <input type="text" th:field="*{enderecosCobranca[0].bairro}" id="bairroC" class="form-control" aria-describedby="bairroC-label" required/>
+        </div>
     </div>
 
     <div class="col-md-3">
-        <label for="descricaoCidadeC" class="form-label">Cidade:</label>
-        <input type="text" th:field="*{enderecosCobranca[0].cidade.descricao}" id="descricaoCidadeC" class="form-control" required/>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="cepC-label">CEP:</span>
+            <input type="text" th:field="*{enderecosCobranca[0].cep}" id="cepC" class="form-control" aria-describedby="cepC-label" required/>
+        </div>
     </div>
 
     <div class="col-md-3">
-        <label for="estadoCidadeC" class="form-label">Estado:</label>
-        <select th:field="*{enderecosCobranca[0].cidade.estado.id}" id="estadoCidadeC" class="form-select" required>
-            <option value="" disabled selected>Selecione</option>
-            <option th:each="estado : ${estados}" th:value="${estado.id}" th:text="${estado.descricao}"></option>
-        </select>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="descricaoCidadeC-label">Cidade:</span>
+            <input type="text" th:field="*{enderecosCobranca[0].cidade.descricao}" id="descricaoCidadeC" class="form-control" aria-describedby="descricaoCidadeC-label" required/>
+        </div>
     </div>
-</div>
+
+    <div class="col-md-3">
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="estadoCidadeC-label">Estado:</span>
+            <select th:field="*{enderecosCobranca[0].cidade.estado.id}" id="estadoCidadeC" class="form-select" aria-describedby="estadoCidadeC-label" required>
+                <option value="" disabled selected>Selecione</option>
+                <option th:each="estado : ${estados}" th:value="${estado.id}" th:text="${estado.descricao}"></option>
+            </select>
+        </div>
+    </div>
 </div>

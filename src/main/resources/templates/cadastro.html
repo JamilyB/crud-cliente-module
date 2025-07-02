@@ -20,11 +20,18 @@
         <div th:replace="components/enderecoC :: component"></div>
         <div th:replace="components/cartao :: component"></div>
 
-        <button type="submit" class="btn btn-success mt-3"
-                th:text="${modoEdicao} ? 'Salvar alterações' : 'Cadastrar'">Cadastrar</button>
+        <button type="submit"
+                class="btn btn-success mt-4 mb-3 px-5 py-2"
+                style="width: 200px;"
+                th:text="${modoEdicao} ? 'Salvar' : 'Cadastrar'">
+        </button>
 
-        <a th:if="${modoEdicao}" th:href="@{'/clientes/excluir/' + ${cliente.id}}"
-           class="btn btn-danger mt-3 ms-2">Excluir</a>
+        <a th:if="${modoEdicao}"
+           th:href="@{'/clientes/excluir/' + ${cliente.id}}"
+           class="btn btn-danger mt-4 mb-3 px-4 py-2 ms-2"
+           style="width: 140px;">
+            Excluir
+        </a>
     </form>
 </div>
 

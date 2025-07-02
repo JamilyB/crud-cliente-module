@@ -1,26 +1,41 @@
 <div class="row" th:fragment="component" xmlns:th="http://www.thymeleaf.org">
+
     <div class="col-md-5">
-        <label for="nome" class="form-label">Nome:</label>
-        <input type="text" th:field="*{nome}" id="nome" class="form-control" required/>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="nome-label">Nome:</span>
+            <input type="text" th:field="*{nome}" id="nome" class="form-control" aria-describedby="nome-label" required/>
+        </div>
     </div>
+
     <div class="col-md-3">
-        <label for="cpf" class="form-label">CPF:</label>
-        <input type="text" th:field="*{cpf}" id="cpf" class="form-control" placeholder="000.000.000-00" required/>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="cpf-label">CPF:</span>
+            <input type="text" th:field="*{cpf}" id="cpf" class="form-control" placeholder="000.000.000-00" aria-describedby="cpf-label" required/>
+        </div>
     </div>
 
     <div class="col-md-2">
-        <label for="genero" class="form-label">Genero:</label>
-        <select th:field="*{genero.id}" id="genero" class="form-select" required>
-            <option value="" disabled selected>Selecione</option>
-            <option th:each="g : ${generos}" th:value="${g.id}" th:text="${g.descricao}"></option>
-        </select>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="genero-label">Gênero:</span>
+            <select th:field="*{genero.id}" id="genero" class="form-select" aria-describedby="genero-label" required>
+                <option value="" disabled selected>Selecione</option>
+                <option th:each="g : ${generos}" th:value="${g.id}" th:text="${g.descricao}"></option>
+            </select>
+        </div>
     </div>
+
     <div class="col-md-3">
-        <label for="dtNasc" class="form-label">Data de Nascimento:</label>
-        <input type="date" th:field="*{dtNasc}" id="dtNasc" class="form-control"/>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="dtNasc-label">Data de Nascimento:</span>
+            <input type="date" th:field="*{dtNasc}" id="dtNasc" class="form-control" aria-describedby="dtNasc-label"/>
+        </div>
     </div>
-    <div class="col-md-4">
-        <label for="senha" class="form-label">Senha:</label>
-        <input type="password" th:field="*{senha}" id="senha" class="form-control"/>
+
+    <div class="col-md-4" th:unless="${modoEdicao}">
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="senha-label">Senha:</span>
+            <input type="password" th:field="*{senha}" id="senha" class="form-control" aria-describedby="senha-label"/>
+        </div>
     </div>
+
 </div>

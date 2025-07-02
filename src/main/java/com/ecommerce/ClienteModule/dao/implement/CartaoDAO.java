@@ -1,5 +1,6 @@
-package com.ecommerce.ClienteModule.dao;
+package com.ecommerce.ClienteModule.dao.implement;
 
+import com.ecommerce.ClienteModule.dao.IDAO;
 import com.ecommerce.ClienteModule.domain.Bandeira;
 import com.ecommerce.ClienteModule.domain.Cartao;
 import com.ecommerce.ClienteModule.domain.Cliente;
@@ -59,7 +60,20 @@ public class CartaoDAO implements IDAO<Cartao> {
 
     @Override
     public void update(Cartao cartao) {
+        String sql = "UPDATE cartao SET num_cartao = ?, nome_impresso = ?, cod_seguranca = ?, bandeira_id = ? WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            saveBandeira(cartao.getBandeira());
+            ps.setString(1, cartao.getNumCartao());
+            ps.setString(2, cartao.getNomeImpresso());
+            ps.setString(3, cartao.getCodSeguranca());
+            ps.setObject(4, cartao.getBandeira() != null ? cartao.getBandeira().getId() : null, Types.BIGINT);
+            ps.setLong(5, cartao.getId());
+            ps.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -193,16 +207,6 @@ public class CartaoDAO implements IDAO<Cartao> {
         return list;
     }
 
-    public void saveAll(List<Cartao> cartoes, Long clienteId) {
-        if (cartoes == null) return;
-
-        for (Cartao c : cartoes) {
-            c.setCliente(new Cliente());
-            c.getCliente().setId(clienteId);
-            save(c);
-        }
-    }
-
     public List<Bandeira> findAllBandeiras() {
         List<Bandeira> bandeiras = new ArrayList<>();
         String sql = "SELECT * FROM bandeira";
@@ -290,6 +294,5 @@ public class CartaoDAO implements IDAO<Cartao> {
             e.printStackTrace();
         }
     }
-
 
 }

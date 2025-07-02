@@ -1,5 +1,6 @@
-package com.ecommerce.ClienteModule.dao;
+package com.ecommerce.ClienteModule.dao.implement;
 
+import com.ecommerce.ClienteModule.dao.IDAO;
 import com.ecommerce.ClienteModule.domain.*;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,105 @@ public class EnderecoDAO implements IDAO<Endereco> {
                     "FOREIGN KEY (cidade_id) REFERENCES cidade(id), " +
                     "FOREIGN KEY (cliente_id) REFERENCES cliente(id))"
             );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void save(Endereco endereco) {
+        if (endereco == null || endereco.getCliente() == null) return;
+
+        saveCidade(endereco.getCidade());
+
+        String sql = "INSERT INTO endereco (tipo, logradouro, numero, cep, bairro, cidade_id, tipo_logradouro_id, tipo_residencial_id, cliente_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, endereco.getTipo());
+            ps.setString(2, endereco.getLogradouro());
+            ps.setInt(3, endereco.getNumero());
+            ps.setString(4, endereco.getCep());
+            ps.setString(5, endereco.getBairro());
+            ps.setObject(6, endereco.getCidade() != null ? endereco.getCidade().getId() : null, Types.BIGINT);
+            ps.setObject(7, endereco.getTipoLogradouro() != null ? endereco.getTipoLogradouro().getId() : null, Types.BIGINT);
+            ps.setObject(8, endereco.getTipoResidencial() != null ? endereco.getTipoResidencial().getId() : null, Types.BIGINT);  // <-- Aqui
+            ps.setLong(9, endereco.getCliente().getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(Endereco endereco) {
+        if (endereco == null || endereco.getId() == null) return;
+        saveCidade(endereco.getCidade());
+        String sql = "UPDATE endereco SET tipo = ?, logradouro = ?, numero = ?, bairro = ?, cep = ?, " +
+                "tipo_logradouro_id = ?, tipo_residencial_id = ?, cidade_id = ? WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, endereco.getTipo());
+            ps.setString(2, endereco.getLogradouro());
+            ps.setInt(3, endereco.getNumero());
+            ps.setString(4, endereco.getBairro());
+            ps.setString(5, endereco.getCep());
+            ps.setObject(6, endereco.getTipoLogradouro() != null ? endereco.getTipoLogradouro().getId() : null, Types.BIGINT);
+            ps.setObject(7, endereco.getTipoResidencial() != null ? endereco.getTipoResidencial().getId() : null, Types.BIGINT);
+            ps.setObject(8, endereco.getCidade() != null ? endereco.getCidade().getId() : null, Types.BIGINT);
+            ps.setLong(9, endereco.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Endereco findById(Long id) {
+        String sql = "SELECT * FROM endereco WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Endereco e = new Endereco();
+                e.setId(rs.getLong("id"));
+                e.setTipo(rs.getString("tipo"));
+                e.setLogradouro(rs.getString("logradouro"));
+                e.setNumero(rs.getInt("numero"));
+                e.setCep(rs.getString("cep"));
+                e.setBairro(rs.getString("bairro"));
+                Long cidadeId = rs.getLong("cidade_id");
+                if (!rs.wasNull()) {
+                    e.setCidade(findCidadeById(cidadeId));
+                }
+
+                Long tipoLogradouroId = rs.getLong("tipo_logradouro_id");
+                if (!rs.wasNull()) {
+                    e.setTipoLogradouro(findTipoLogradouroById(tipoLogradouroId));
+                }
+
+                return e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Endereco> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public void delete(Long id) {
+        String sql = "DELETE FROM endereco WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,124 +168,6 @@ public class EnderecoDAO implements IDAO<Endereco> {
         return null;
     }
 
-    @Override
-    public void save(Endereco endereco) {
-        if (endereco == null || endereco.getCliente() == null) return;
-
-        saveCidade(endereco.getCidade());
-
-        String sql = "INSERT INTO endereco (tipo, logradouro, numero, cep, bairro, cidade_id, tipo_logradouro_id, tipo_residencial_id, cliente_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, endereco.getTipo());
-            ps.setString(2, endereco.getLogradouro());
-            ps.setInt(3, endereco.getNumero());
-            ps.setString(4, endereco.getCep());
-            ps.setString(5, endereco.getBairro());
-            ps.setObject(6, endereco.getCidade() != null ? endereco.getCidade().getId() : null, Types.BIGINT);
-            ps.setObject(7, endereco.getTipoLogradouro() != null ? endereco.getTipoLogradouro().getId() : null, Types.BIGINT);
-            ps.setObject(8, endereco.getTipoResidencial() != null ? endereco.getTipoResidencial().getId() : null, Types.BIGINT);  // <-- Aqui
-            ps.setLong(9, endereco.getCliente().getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void update(Endereco endereco) {
-
-    }
-
-    @Override
-    public Endereco findById(Long id) {
-        String sql = "SELECT * FROM endereco WHERE id = ?";
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Endereco e = new Endereco();
-                e.setId(rs.getLong("id"));
-                e.setTipo(rs.getString("tipo"));
-                e.setLogradouro(rs.getString("logradouro"));
-                e.setNumero(rs.getInt("numero"));
-                e.setCep(rs.getString("cep"));
-                e.setBairro(rs.getString("bairro"));
-                Long cidadeId = rs.getLong("cidade_id");
-                if (!rs.wasNull()) {
-                    e.setCidade(findCidadeById(cidadeId));
-                }
-
-                Long tipoLogradouroId = rs.getLong("tipo_logradouro_id");
-                if (!rs.wasNull()) {
-                    e.setTipoLogradouro(findTipoLogradouroById(tipoLogradouroId));
-                }
-
-                return e;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public List<Endereco> findAll() {
-        return List.of();
-    }
-
-    public List<Endereco> findEnderecosByClienteId(Long clienteId) {
-        List<Endereco> enderecos = new ArrayList<>();
-        String sql = "SELECT * FROM endereco WHERE cliente_id = ?";
-
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setLong(1, clienteId);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Endereco e = new Endereco();
-                e.setId(rs.getLong("id"));
-                e.setTipo(rs.getString("tipo"));
-                e.setLogradouro(rs.getString("logradouro"));
-                e.setNumero(rs.getInt("numero"));
-                e.setBairro(rs.getString("bairro"));
-                e.setCep(rs.getString("cep"));
-
-                Long tipoLogradouroId = rs.getLong("tipo_logradouro_id");
-                e.setTipoLogradouro(tipoLogradouroId != 0 ? findTipoLogradouroById(tipoLogradouroId) : null);
-
-                Long tipoResidencialId = rs.getLong("tipo_residencial_id");
-                e.setTipoResidencial(tipoResidencialId != 0 ? findTipoResidencialById(tipoResidencialId) : null);
-
-                Long cidadeId = rs.getLong("cidade_id");
-                e.setCidade(cidadeId != 0 ? findCidadeById(cidadeId) : null);
-
-                enderecos.add(e);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return enderecos;
-    }
-
-
-    @Override
-    public void delete(Long id) {
-        String sql = "DELETE FROM endereco WHERE id = ?";
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void deleteByClienteId(Long clienteId) {
         String sql = "DELETE FROM endereco WHERE cliente_id = ?";
         try (Connection conn = DriverManager.getConnection(url, user, password);
@@ -196,7 +178,6 @@ public class EnderecoDAO implements IDAO<Endereco> {
             e.printStackTrace();
         }
     }
-
 
     public TipoResidencial findTipoResidencialById(Long id) {
         String sql = "SELECT id, descricao FROM tipo_residencial WHERE id = ?";
@@ -367,7 +348,6 @@ public class EnderecoDAO implements IDAO<Endereco> {
         return enderecos;
     }
 
-
     public void updatePorCliente(Long clienteId, List<Endereco> enderecos) {
         if (enderecos == null) return;
 
@@ -441,27 +421,6 @@ public class EnderecoDAO implements IDAO<Endereco> {
                 ex.printStackTrace();
             }
         }
-    }
-
-
-    public Cidade findCidadeByDescricaoAndEstado(String descricao, Long estadoId) {
-        String sql = "SELECT id, descricao, estado_id FROM cidade WHERE UPPER(descricao) = UPPER(?) AND estado_id = ?";
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, descricao);
-            ps.setLong(2, estadoId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Cidade cidade = new Cidade();
-                cidade.setId(rs.getLong("id"));
-                cidade.setDescricao(rs.getString("descricao"));
-                cidade.setEstado(findEstadoById(rs.getLong("estado_id")));
-                return cidade;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

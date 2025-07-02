@@ -18,7 +18,6 @@
             <th scope="col">Nome</th>
             <th scope="col">CPF</th>
             <th scope="col"></th>
-            <th scope="col">Inativar</th>
         </tr>
         </thead>
         <tbody>
@@ -28,9 +27,6 @@
             <td>
                 <a th:href="@{'/clientes/editar/' + ${cliente.id}}" class="btn btn-sm btn-primary">Editar</a>
                 <a th:href="@{'/clientes/excluir/' + ${cliente.id}}" class="btn btn-sm btn-danger">Excluir</a>
-            </td>
-            <td>
-                <input type="checkbox" name="selecionado" th:value="${cliente.id}">
             </td>
         </tr>
         </tbody>

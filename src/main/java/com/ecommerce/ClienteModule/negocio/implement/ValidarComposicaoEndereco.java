@@ -1,6 +1,6 @@
-package com.ecommerce.ClienteModule.application.implement;
+package com.ecommerce.ClienteModule.negocio.implement;
 
-import com.ecommerce.ClienteModule.application.IStrategy;
+import com.ecommerce.ClienteModule.negocio.IStrategy;
 import com.ecommerce.ClienteModule.domain.Endereco;
 import org.springframework.stereotype.Component;
 

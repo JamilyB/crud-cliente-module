@@ -1,7 +1,9 @@
 <div th:fragment="header" xmlns:th="http://www.thymeleaf.org">
-    <nav class="navbar navbar-expand-lg" style="background-color: #8B0000;">
+    <nav class="navbar navbar-expand-lg" style="background-color: #003366;">
         <div class="container-fluid">
-            <a class="navbar-brand text-white fw-bold" href="#">*</a>
+            <a class="navbar-brand" th:href="@{/}">
+                <img th:src="@{/book.png}" alt="Logo" style="height: 40px;">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -9,10 +11,18 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-white" th:href="@{/clientes/cadastro}">Cadastro</a>
+                        <a class="nav-link text-white fw-bold px-3 py-2 rounded-pill"
+                           th:href="@{/clientes/cadastro}"
+                           style="background-color: #031425; transition: 0.3s;">
+                            Cadastro
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" th:href="@{/clientes/listar}">Clientes</a>
+                    <li class="nav-item ms-2">
+                        <a class="nav-link text-white fw-bold px-3 py-2 rounded-pill"
+                           th:href="@{/clientes/listar}"
+                           style="background-color: #031425; transition: 0.3s;">
+                            Clientes
+                        </a>
                     </li>
                 </ul>
             </div>
