@@ -1,0 +1,21 @@
+<div th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar navbar-expand-lg" style="background-color: #8B0000;">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white fw-bold" href="#">*</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/clientes/cadastro}">Cadastro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" th:href="@{/clientes/listar}">Clientes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
